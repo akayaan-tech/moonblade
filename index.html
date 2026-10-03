@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071010">
+  <meta name="description" content="Moonblade Arena — a moonlit anime survival action game. Play free in your browser.">
+  <title>Moonblade Arena — Survive the night</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div id="app">
+    <aside class="side-panel left-panel" aria-label="Game information">
+      <div class="side-kicker"><span class="tiny-orbit"></span> AN ORIGINAL SURVIVAL ACTION GAME</div>
+      <h2>One fighter.<br><em>Endless night.</em></h2>
+      <p>Keep moving. Let the moons hunt. Every fallen shadow leaves a little more light behind.</p>
+      <div class="side-rule"></div>
+      <div class="side-stat-row"><span>YOUR BEST RUN</span><strong id="side-best">000,000</strong></div>
+      <div class="side-stat-row"><span>MOON COINS</span><strong><span class="coin-dot">✦</span> <span id="side-coins">0</span></strong></div>
+      <div class="side-note"><span class="note-icon">✧</span><span>Built for a quick run.<br>Made to be played again.</span></div>
+      <div class="side-version">MOONBLADE PROTOCOL <span>01 / 01</span></div>
+    </aside>
+
+    <main id="stage" aria-label="Moonblade Arena game">
+      <div id="game-canvas" aria-hidden="true"></div>
+      <div class="stage-vignette" aria-hidden="true"></div>
+      <div class="stage-grain" aria-hidden="true"></div>
+
+      <section id="menu-screen" class="screen menu-screen" aria-label="Main menu">
+        <header class="menu-top">
+          <div class="brand-lockup">
+            <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M25.8 4.2C14.1 5.3 7.7 15.9 12.2 25.2c4.1 8.5 15.3 10.8 22.3 4.1-7.1 2.1-14.8-2.1-16.5-9.6C16.4 13.9 19.8 7.4 25.8 4.2Z" fill="currentColor"/><path d="M7 8.5v5M4.5 11h5M32 4v4M30 6h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="brand-name">MOONBLADE <b>ARENA</b></span>
+          </div>
+          <button class="sound-chip" id="menu-sound-toggle" aria-label="Toggle sound"><span class="sound-icon">♫</span><span id="menu-sound-label">SOUND ON</span></button>
+        </header>
+        <div class="menu-center-copy">
+          <div class="eyebrow"><i></i> SURVIVE THE NIGHT <i></i></div>
+          <h1>THE MOON<br><span>IS YOURS.</span></h1>
+          <p class="menu-subtitle">A crescent in every direction.<br>Now hold the line.</p>
+        </div>
+        <div class="fighter-tag"><span class="tag-line"></span><div><small>THE MOONKEEPER</small><strong>KAEL <b>·</b> LV. 01</strong></div><span class="fighter-status">READY</span></div>
+        <div class="menu-bottom">
+          <button class="primary-button" id="play-button"><span class="play-triangle" aria-hidden="true"></span><span>ENTER THE ARENA</span><span class="button-arrow">↗</span></button>
+          <div class="menu-links">
+            <button class="text-button" data-menu-modal="fighter">FIGHTER</button><span></span>
+            <button class="text-button" data-menu-modal="armory">ARMORY</button><span></span>
+            <button class="text-button" data-menu-modal="howto">HOW TO PLAY</button><span></span>
+            <button class="text-button" data-menu-modal="settings">SETTINGS</button>
+          </div>
+          <div class="menu-footer"><span>WASD / ARROWS TO MOVE</span><span class="footer-dot">•</span><span>SPACE TO UNLEASH</span></div>
+        </div>
+        <div class="menu-corner-note">A SINGLE PLAYER<br>MOONLIT SURVIVAL</div>
+      </section>
+
+      <section id="hud" class="hud screen is-hidden" aria-label="Game HUD">
+        <div class="hud-topline">
+          <div class="hud-brand"><span class="hud-moon">☾</span><span>MOONBLADE <b>ARENA</b></span><i></i><span class="run-label">RUN <b>01</b></span></div>
+          <button id="pause-button" class="round-icon-button pause-button" aria-label="Pause game"><span class="pause-glyph"><i></i><i></i></span></button>
+        </div>
+        <div class="hud-stats">
+          <div class="player-mini"><div class="mini-avatar">K</div><div class="mini-copy"><div class="name-row"><strong>KAEL</strong><span id="level-label">LV. 01</span></div><div class="health-track"><span id="health-fill"></span></div><div class="health-caption"><span><i class="heart-dot">♥</i> <b id="health-label">100</b> / <span id="max-health-label">100</span></span><span>HP</span></div></div></div>
+          <div class="hud-score-grid">
+            <div class="hud-stat"><span class="stat-icon">⌁</span><div><small>SURVIVED</small><strong id="time-label">00:00</strong></div></div>
+            <div class="hud-stat"><span class="stat-icon gold">✧</span><div><small>SCORE</small><strong id="score-label">000</strong></div></div>
+          </div>
+          <div class="xp-box"><div class="xp-caption"><span><i>✦</i> MOON ENERGY</span><span id="xp-label">0 / 28</span></div><div class="xp-track"><span id="xp-fill"></span></div><div class="xp-foot"><span>LEVEL <b id="xp-level-label">01</b></span><span><i class="coin-mini">✦</i> <b id="coin-label">0</b></span></div></div>
+        </div>
+        <div id="boss-bar" class="boss-bar is-hidden"><div class="boss-heading"><span>☠ THE ECLIPSE WARDEN</span><small id="boss-hp-label">100%</small></div><div class="boss-track"><span id="boss-fill"></span></div></div>
+        <div class="run-alert" id="run-alert" aria-live="polite"></div>
+        <div class="hud-bottom">
+          <div id="joystick" class="joystick" aria-label="Movement joystick">
+            <div class="joy-ring"><span class="joy-arrows">✣</span><div id="joystick-knob" class="joy-knob"></div></div>
+            <span class="joy-label">MOVE</span>
+          </div>
+          <div class="touch-hint" id="touch-hint">DRAG TO MOVE <span>·</span> TAP A SKILL</div>
+          <div class="ability-row">
+            <button class="ability-button vortex-ability" data-ability="vortex" aria-label="Crimson Vortex, ready"><span class="ability-ring"><span class="ability-art">✹</span><i class="cooldown-mask"></i></span><small>VORTEX</small><kbd>SPACE</kbd></button>
+            <button class="ability-button locked" data-ability="burst" aria-label="Moon Burst, locked"><span class="ability-ring"><span class="ability-art">☾</span><i class="cooldown-mask"></i><b class="lock-mark">⌑</b></span><small>BURST</small><kbd>Q</kbd></button>
+            <button class="ability-button locked" data-ability="shield" aria-label="Energy Shield, locked"><span class="ability-ring"><span class="ability-art">◇</span><i class="cooldown-mask"></i><b class="lock-mark">⌑</b></span><small>SHIELD</small><kbd>E</kbd></button>
+          </div>
+        </div>
+        <div class="combat-footnote"><span class="live-pip"></span> AUTO-ATTACK ACTIVE <span class="footnote-sep">/</span> <span id="enemy-count-label">0</span> THREATS</div>
+      </section>
+
+      <section id="pause-screen" class="screen modal-screen is-hidden" aria-label="Game paused">
+        <div class="modal-card pause-card">
+          <div class="modal-emblem">Ⅱ</div><div class="modal-eyebrow">TAKE A BREATH</div><h2>PAUSED</h2><p>The night can wait.</p>
+          <button class="primary-button modal-primary" id="resume-button"><span>BACK TO THE FIGHT</span><span class="button-arrow">↗</span></button>
+          <div class="modal-button-row"><button class="secondary-button" id="pause-settings">SETTINGS</button><button class="secondary-button" id="pause-restart">RESTART RUN</button><button class="secondary-button" id="pause-home">MAIN MENU</button></div>
+          <div class="pause-tip">TIP <span>Keep moving — even a moon needs room to orbit.</span></div>
+        </div>
+      </section>
+
+      <section id="upgrade-screen" class="screen modal-screen is-hidden" aria-label="Level up selection">
+        <div class="upgrade-wrap">
+          <div class="level-up-icon">✦</div><div class="modal-eyebrow">POWER ANSWERS POWER</div><h2>LEVEL <span id="new-level-label">02</span></h2><p class="upgrade-intro">Choose one blessing for the road ahead.</p>
+          <div id="upgrade-cards" class="upgrade-cards"></div>
+          <div class="upgrade-footer"><span>✧</span> THE ARENA IS PAUSED <span>✧</span></div>
+        </div>
+      </section>
+
+      <section id="gameover-screen" class="screen modal-screen is-hidden" aria-label="Game over">
+        <div class="modal-card gameover-card">
+          <div class="gameover-mark"><span>☾</span><i></i></div><div class="modal-eyebrow">THE NIGHT CLAIMS ANOTHER</div><h2>RUN <em>ENDED</em></h2><p id="run-summary">You held the line.</p>
+          <div class="results-score"><small>FINAL SCORE</small><strong id="final-score">000,000</strong><span id="best-stamp" class="best-stamp is-hidden">✦ NEW PERSONAL BEST</span></div>
+          <div class="results-grid"><div><small>SURVIVED</small><strong id="final-time">00:00</strong></div><div><small>SHADOWS CUT</small><strong id="final-kills">0</strong></div><div><small>LEVEL REACHED</small><strong id="final-level">1</strong></div><div><small>COINS FOUND</small><strong id="final-coins">0</strong></div></div>
+          <button class="primary-button modal-primary" id="restart-button"><span>RUN IT BACK</span><span class="button-arrow">↗</span></button>
+          <button class="text-button gameover-home" id="gameover-home">RETURN TO MENU</button>
+        </div>
+      </section>
+
+      <section id="menu-modal" class="screen modal-screen menu-modal-screen is-hidden" aria-label="Menu details">
+        <div class="modal-card menu-detail-card"><button class="modal-close" id="close-menu-modal" aria-label="Close">×</button><div id="menu-modal-content"></div></div>
+      </section>
+
+      <div class="mobile-rotate-hint" id="rotate-hint"><span>↻</span><small>BEST PLAYED<br>IN PORTRAIT</small></div>
+    </main>
+
+    <aside class="side-panel right-panel" aria-label="Controls and game info">
+      <div class="side-topline"><span class="online-mark"></span> OFFLINE READY <span class="side-version-small">v1.0</span></div>
+      <div class="fighter-card">
+        <div class="fighter-card-art"><div class="card-aura"></div><span class="card-blade blade-a">☾</span><span class="card-blade blade-b">☾</span><span class="card-blade blade-c">☾</span><div class="card-fighter">✦</div></div>
+        <div class="fighter-card-copy"><small>YOUR FIGHTER</small><strong>KAEL</strong><span>THE MOONKEEPER</span></div>
+        <div class="card-rank">01</div>
+      </div>
+      <div class="control-heading"><span>QUICK CONTROLS</span><i></i></div>
+      <div class="key-row"><span class="key-cluster"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><span>MOVE</span></div>
+      <div class="key-row"><span class="key-cluster arrows"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></span><span>ALSO MOVE</span></div>
+      <div class="key-row"><span class="key-cluster"><kbd>SPACE</kbd></span><span>CRIMSON VORTEX</span></div>
+      <div class="key-row"><span class="key-cluster"><kbd>Q</kbd><kbd>E</kbd></span><span>UNLOCKED SKILLS</span></div>
+      <div class="side-bottom-card"><span class="side-glint">✧</span><strong>THE MOONS<br>FIGHT WITH YOU.</strong><p>Orbiting blades strike automatically. Your job is to stay alive.</p><div class="side-bottom-line"><span>NO DOWNLOAD</span><span>NO SIGNAL NEEDED</span></div></div>
+    </aside>
+  </div>
+  <div id="toast-layer" class="toast-layer" aria-live="polite"></div>
+  <script src="./vendor/phaser.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

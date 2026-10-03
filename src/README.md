@@ -1,0 +1,1 @@
+Gameplay code is split by responsibility. `ArenaScene` owns the run clock and world loop; reusable player/enemy/projectile models live in `entities/`; progression, persistence, rendering textures, audio, and orbit weapons are in `systems/`. The main menu and HTML HUD are separate from the Canvas world.
